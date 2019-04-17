@@ -17,7 +17,9 @@ def print_header
 end
 
 def print(students)
-  students.each { |student| puts "#{student[:name]} (#{student[:cohort]} cohort)" }
+  students.each do |student| 
+    puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:name][0] == 'J'
+  end
 end
 
 def print_footer(names)
