@@ -5,7 +5,7 @@ def input_students
   name = gets.chomp
   while !name.empty? do
     while true do
-      puts "What is the #{name}'s cohort?"
+      puts "What is #{name}'s cohort?"
       cohort = gets.chomp
       cohort = 'november' if cohort.empty?
       months = ['january', 'february', 'march', 'april', 'june', 'july',
