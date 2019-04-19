@@ -57,8 +57,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    selection = gets.chomp
-    process(selection)
+    process(gets.chomp)
   end
 end
 
