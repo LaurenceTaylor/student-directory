@@ -19,14 +19,14 @@ def print_header
   puts "-------------"
 end
 
-def print_students_list(students)
-  students.each do |student|
+def print_students_list
+  @students.each do |student|
     puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
-def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+def print_footer
+  puts "Overall, we have #{@students.count} great students"
 end
 
 def print_menu
@@ -37,8 +37,8 @@ end
 
 def show_students
   print_header
-  print_students_list(@students)
-  print_footer(@students)
+  print_students_list
+  print_footer
 end
 
 def process(selection)
