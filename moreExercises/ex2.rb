@@ -14,7 +14,7 @@ def input_students
     append_students(name)
     puts "Now we have #{@students.count} students"
     # get another name from the user
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
 end
 
