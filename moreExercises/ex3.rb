@@ -54,7 +54,7 @@ def save_students
   file.close
 end
 
-def load_students(filename)
+def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -65,7 +65,7 @@ end
 
 def default_load
   if File.exists?("students.csv")
-    load_students("students.csv")
+    load_students
     puts "Loaded #{@students.count} from students.csv"
   else
     puts "Nothing to load"
@@ -89,27 +89,26 @@ def try_load_students
   load_process(filename)
 end
 
-def process(selection)
-  case selection
-  when "1"
-    input_students
-  when "2"
-    show_students
-  when "3"
-    save_students
-  when "4"
-    load_students("students.csv")
-  when "9"
-    exit
+@methods_list = {
+    "1" => method(:input_students),
+    "2" => method(:show_students),
+    "3" => method(:save_students),
+    "4" => method(:load_students),
+    "9" => method(:exit)
+}
+
+def process_input(selection)
+  if selection =~ /[1-4]|9/ && selection.to_i < 10
+    @methods_list[selection].call
   else
-    "I don't know what you meant, try again"
+    puts "I don't know what you meant, try again"
   end
 end
 
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    process_input(STDIN.gets.chomp)
   end
 end
 
