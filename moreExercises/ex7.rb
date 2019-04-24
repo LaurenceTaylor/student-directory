@@ -106,13 +106,8 @@ def which_save_file?
 end
 
 def save_students
-  File.open(which_save_file?, "w") do |file|
-    @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts(csv_line)
-    end
-    puts "Saved #{@students.count} to students.csv"
+  CSV.open(which_save_file?, "w") do |csv|
+    @students.each { |student| csv << [student[:name], student[:cohort]] }
   end
 end
 
@@ -128,7 +123,6 @@ def load_students(filename = which_load_file?)
     name, cohort = line
     append_students(name, cohort)
   end
-  puts "Loaded #{@students.count} from #{filename}"
 end
 
 # Call relevant method based on user input
