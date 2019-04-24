@@ -7,25 +7,26 @@
 
 # load_students method is in the 'Deal with user input' section
 
-def default_load
-  if File.exists?("students.csv")
-    load_students
-    puts "Loaded #{@students.count} from students.csv"
-  else
+def print_load_failure(filename)
+  if filename == "students.csv"
     puts "Nothing to load."
+  else
+    puts "Sorry, #{filename} doesn't exist."
   end
 end
 
-def try_load_students(filename = ARGV.first)
-  if filename.nil?
-    default_load
-  elsif File.exists?(filename)
+def check_file_exists(filename = "students.csv")
+  if File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} doesn't exist."
-    exit
+    print_load_failure(filename)
   end
+end
+
+def try_load_students
+  given_filename = ARGV.first
+  given_filename.nil? ? check_file_exists : check_file_exists(given_filename)
 end
 
 ####################################################################
