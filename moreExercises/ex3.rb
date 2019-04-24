@@ -1,4 +1,59 @@
-@students = [] # an empty array available to all methods
+# Store the students given in an array available to all methods
+@students = []
+
+####################################################################
+## Load file on startup (user input/ students.csv by default)
+####################################################################
+
+# load_students method is in the 'Deal with user input' section
+
+def default_load
+  if File.exists?("students.csv")
+    load_students
+    puts "Loaded #{@students.count} from students.csv"
+  else
+    puts "Nothing to load."
+  end
+end
+
+def try_load_students(filename = ARGV.first)
+  if filename.nil?
+    default_load
+  elsif File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+####################################################################
+## Menu
+####################################################################
+
+def interactive_menu
+  loop do
+    print_menu
+    process_input(STDIN.gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
+  puts "9. Exit"
+end
+
+####################################################################
+## Deal with user input
+####################################################################
+
+# Define relevant methods
+
+# 1. Input the students
 
 def append_students(name, cohort = :november)
   @students << {name: name, cohort: cohort}
@@ -15,6 +70,8 @@ def input_students
   end
 end
 
+# 2. Show the students
+
 def print_header
   puts "The students of my cohort at Makers Academy"
   puts "-------------"
@@ -28,14 +85,7 @@ end
 
 def print_footer
   puts "Overall, we have #{@students.count} great students"
-end
-
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
-  puts "9. Exit"
+  puts "-------------"
 end
 
 def show_students
@@ -43,6 +93,8 @@ def show_students
   print_students_list
   print_footer
 end
+
+# 3. Save the list to students.csv
 
 def save_students
   file = File.open("students.csv", "w")
@@ -54,6 +106,8 @@ def save_students
   file.close
 end
 
+# 4. Load the list from students.csv
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
@@ -63,31 +117,7 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def default_load
-  if File.exists?("students.csv")
-    load_students
-    puts "Loaded #{@students.count} from students.csv"
-  else
-    puts "Nothing to load"
-  end
-end
-
-def load_process(filename)
-  if filename.nil?
-    default_load
-  elsif File.exists?(filename)
-    load_student(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry, #{filename} doesn't exist."
-    exit
-  end
-end
-
-def try_load_students
-  filename = ARGV.first
-  load_process(filename)
-end
+# Call relevant method based on user input
 
 @methods_list = {
     "1" => method(:input_students),
@@ -98,19 +128,19 @@ end
 }
 
 def process_input(selection)
-  if selection =~ /[1-4]|9/ && selection.to_i < 10
+  if selection =~ /[12349]/ && selection.size == 1
     @methods_list[selection].call
   else
     puts "I don't know what you meant, try again"
   end
 end
 
-def interactive_menu
-  loop do
-    print_menu
-    process_input(STDIN.gets.chomp)
-  end
-end
+####################################################################
+## Run program
+####################################################################
 
+# Load file of students if given/ students.csv exists
 try_load_students
+
+# Run program
 interactive_menu
