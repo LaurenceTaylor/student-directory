@@ -54,7 +54,7 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -63,15 +63,18 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first
+def default_load
+  if File.exists?("students.csv")
+    load_students("students.csv")
+    puts "Loaded #{@students.count} from students.csv"
+  else
+    puts "Nothing to load"
+  end
+end
+
+def load_process(filename)
   if filename.nil?
-    if File.exists?("students.csv")
-      load_students
-      puts "Loaded #{@students.count} from students.csv"
-    else
-      puts "Nothing to load"
-    end
+    default_load
   elsif File.exists?(filename)
     load_student(filename)
     puts "Loaded #{@students.count} from #{filename}"
@@ -79,6 +82,11 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
+end
+
+def try_load_students
+  filename = ARGV.first
+  load_process(filename)
 end
 
 def process(selection)
@@ -90,7 +98,7 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    load_students("students.csv")
   when "9"
     exit
   else
