@@ -17,17 +17,12 @@ def print_load_failure(filename)
   end
 end
 
-def check_file_exists(filename = "students.csv")
+def try_load_students(filename = "students.csv")
   if File.exists?(filename)
     load_students(filename)
   else
     print_load_failure(filename)
   end
-end
-
-def try_load_students
-  given_filename = ARGV.first
-  given_filename.nil? ? check_file_exists : check_file_exists(given_filename)
 end
 
 ####################################################################
@@ -123,6 +118,7 @@ def load_students(filename = which_load_file?)
     name, cohort = line
     append_students(name, cohort)
   end
+  puts "Loaded #{@students.count} students from #{filename}"
 end
 
 # Call relevant method based on user input
